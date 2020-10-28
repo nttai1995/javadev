@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+
+	<h1> Company Detail</h1>
+	<br />
+	<div align="center">
+		<table border="0" cellpadding="10">
+			<tr>
+				<td>Company ID:</td>
+				<td th:text="${company.id}"></td>
+			</tr>
+			<tr>
+				<td>Company Name:</td>
+				<td th:text="${company.name}"></td>
+			</tr>
+			<tr>
+				<td>Location:</td>
+				<td th:text="${company.location}"></td>
+			</tr>
+			<tr>
+				<td>Employee Number:</td>
+				<td th:text="${company.employeeNumber}"></td>
+			</tr>
+		</table>
+	</div>
+
+</body>
+</html>

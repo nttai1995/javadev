@@ -4,8 +4,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,7 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.example.Springmvcthymeleaf.DTO.CompanyDTO;
 import com.example.Springmvcthymeleaf.entity.Company;
@@ -67,11 +65,17 @@ public class CompanyController {
 
 		model.addAttribute("companies", companies1);
 
+		// Chuc nang search
+				List<Company> companies2 = companyService.searchByName("A");
+				for(Company co : companies2) {
+					System.out.println("===================== : ID = "+co.getId()+"========== Name: "+co.getName());
+				}
+				
 		return "company/index";
 	}
 
 	@RequestMapping("/add")
-	public String showNewProductPage(Model model) {
+	public String showNewCompanyPage(Model model) {
 		CompanyDTO companyDTO = new CompanyDTO();
 		model.addAttribute("companyDTO", companyDTO);
 
@@ -79,11 +83,36 @@ public class CompanyController {
 	}
 	
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public String saveProduct(@ModelAttribute("companyDTO") CompanyDTO companyDTO) {
+	public String saveCompany(@ModelAttribute("companyDTO") CompanyDTO companyDTO) {
 		Company company = convertToEntity(companyDTO);
 		companyService.save(company);
 		
 		return "redirect:/company";
+	}
+	
+	@RequestMapping("/edit/{id}")
+	public ModelAndView showEditCompanyPage(@PathVariable(name = "id") int id) {
+	    ModelAndView mav = new ModelAndView("company/edit_product");
+	    Company company = companyService.find(id);
+	    CompanyDTO companyDTO = convertToCompanyDTO(company);
+	    mav.addObject("companyDTO", companyDTO);
+	    
+	    return mav;
+	}
+	
+	@RequestMapping("/delete/{id}")
+	public String deleteProduct(@PathVariable(name = "id") int id) {
+		companyService.delete(id);
+	    return "redirect:/company";       
+	}
+	
+	@RequestMapping("/detail/{id}")
+	public String viewDetailCompanyPage(@PathVariable(name = "id") int id, Model model) {	    
+	    Company company = companyService.find(id);
+	    CompanyDTO companyDTO = convertToCompanyDTO(company);
+	    model.addAttribute("company", companyDTO);
+	    
+	    return "company/detail";
 	}
 
 	private CompanyDTO convertToCompanyDTO(Company company) {
@@ -98,6 +127,9 @@ public class CompanyController {
 	
 	private Company convertToEntity(CompanyDTO companyDTO) {
 		Company company =new Company();
+		if(companyDTO.getId() != null ) {
+			company.setId(companyDTO.getId());
+		}
 		company.setName(companyDTO.getName());
 		company.setLocation(companyDTO.getLocation());
 		company.setEmployeeNumber(companyDTO.getEmployeeNumber());

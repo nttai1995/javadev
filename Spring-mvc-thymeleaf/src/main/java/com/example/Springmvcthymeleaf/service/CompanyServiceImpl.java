@@ -35,6 +35,16 @@ public class CompanyServiceImpl implements CompanyService {
 	}
 	
 	@Override
+	public Company find(int id) {	
+		return companyRepository.findById(id).get();
+	}
+	
+	@Override
+	public void delete(int id) {
+		companyRepository.deleteById(id);		
+	}
+	
+	@Override
 	public Page<Company> pagingAndSorting(int pageNumber, String sortField, String sortDir) {
 		int pageSize = 5;
 		Pageable pageable = PageRequest.of(pageNumber, pageSize, 
@@ -45,10 +55,13 @@ public class CompanyServiceImpl implements CompanyService {
 	}
 
 	@Override
-	public List<Company> searchByName(String name) {
-		
+	public List<Company> searchByName(String name) {		
 		return companyRepository.searchByName(name);
 	}
+
+
+
+
 
 
 

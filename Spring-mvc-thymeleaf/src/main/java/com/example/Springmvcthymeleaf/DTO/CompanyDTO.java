@@ -2,12 +2,12 @@ package com.example.Springmvcthymeleaf.DTO;
 
 public class CompanyDTO {
 
-	private int id;
+	private Integer id;
 	private String name;
 	private String location;
 	private String employeeNumber;
 	
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 	public void setId(int id) {
