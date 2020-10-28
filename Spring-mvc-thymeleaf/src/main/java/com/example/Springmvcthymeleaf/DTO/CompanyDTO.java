@@ -5,6 +5,7 @@ public class CompanyDTO {
 	private int id;
 	private String name;
 	private String location;
+	private String employeeNumber;
 	
 	public int getId() {
 		return id;
@@ -23,6 +24,12 @@ public class CompanyDTO {
 	}
 	public void setLocation(String location) {
 		this.location = location;
+	}
+	public String getEmployeeNumber() {
+		return employeeNumber;
+	}
+	public void setEmployeeNumber(String employeeNumber) {
+		this.employeeNumber = employeeNumber;
 	}
 	
 	

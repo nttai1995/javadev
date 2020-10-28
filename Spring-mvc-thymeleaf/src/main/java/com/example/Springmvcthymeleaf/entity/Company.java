@@ -13,7 +13,7 @@ public class Company {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
+	@Column(name = "id", unique = true, nullable = false)
 	private int id;
 	
 	@Column(name = "name")
@@ -21,6 +21,9 @@ public class Company {
 	
 	@Column(name = "localtion")
 	private String location;
+	
+	@Column(name = "employee_number")
+	private String employeeNumber;
 
 	public int getId() {
 		return id;
@@ -46,10 +49,21 @@ public class Company {
 		this.location = location;
 	}
 
+	public String getEmployeeNumber() {
+		return employeeNumber;
+	}
+
+	public void setEmployeeNumber(String employeeNumber) {
+		this.employeeNumber = employeeNumber;
+	}
+
 	@Override
 	public String toString() {
-		return "Company [id=" + id + ", name=" + name + ", location=" + location + "]";
+		return "Company [id=" + id + ", name=" + name + ", location=" + location + ", employeeNumber=" + employeeNumber
+				+ "]";
 	}
+
+	
 	
 	
 }

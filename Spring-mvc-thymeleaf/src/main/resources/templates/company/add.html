@@ -2,11 +2,36 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>Add New Company</title>
 </head>
 <body>
 
-	<h1> Add New Category </h1>
+	<h1> Add New Company </h1>
+	<br/>
+	<div align="center">
+        <br />
+        <form action="#" th:action="@{/company/save}" th:object="${companyDTO}"
+            method="post">
+ 
+            <table border="0" cellpadding="10">
+                <tr>
+                    <td>Company Name:</td>
+                    <td><input type="text" th:field="*{name}" /></td>
+                </tr>
+                <tr>
+                    <td>Location:</td>
+                    <td><input type="text" th:field="*{location}" /></td>
+                </tr> 
+                <tr>
+                    <td>Employee Number:</td>
+                    <td><input type="text" th:field="*{employeeNumber}" /></td>
+                </tr>                           
+                <tr>
+                    <td colspan="2"><button type="submit">Save</button> </td>
+                </tr>
+            </table>
+        </form>
+    </div>
 	
 </body>
 </html>

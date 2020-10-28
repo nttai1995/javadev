@@ -10,8 +10,10 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.Springmvcthymeleaf.DTO.CompanyDTO;
@@ -22,63 +24,85 @@ import com.example.Springmvcthymeleaf.service.CompanyService;
 @RequestMapping("/company")
 public class CompanyController {
 
-	
 	final CompanyService companyService;
-	
+
 	public CompanyController(CompanyService companyService) {
 		this.companyService = companyService;
 	}
-	
+
 	@GetMapping()
 	public String viewCompanyHomePage(Model model) {
-	    return viewCompanyPage(model, 0, "id", "asc");
+		return viewCompanyPage(model, 0, "id", "asc");
 	}
 
-	
 	@RequestMapping("/page/{pageNum}")
-	public String viewCompanyPage(Model model, 
-			@PathVariable(name = "pageNum") int pageNum,
-			@Param("sortField") String sortField,
-			@Param("sortDir") String sortDir) {
+	public String viewCompanyPage(Model model, @PathVariable(name = "pageNum") int pageNum,
+			@Param("sortField") String sortField, @Param("sortDir") String sortDir) {
 		// Chuc nang list
-		/*List<Company> companies = companyService.findAll();
-		model.addAttribute("companies", companies); */
-		
+		/*
+		 * List<Company> companies = companyService.findAll();
+		 * model.addAttribute("companies", companies);
+		 */
+
 		// Chuc nang paging and sorting
-		if(sortField == null) {
+		if (sortField == null) {
 			sortField = "id";
 		}
-		if(sortDir == null) {
+		if (sortDir == null) {
 			sortDir = "asc";
 		}
 		Page<Company> page = companyService.pagingAndSorting(pageNum, sortField, sortDir);
-		List<CompanyDTO> companies1 = page.getContent().stream()
-		        .map(this::convertToCompanyDTO)
-		        .collect(Collectors.toList());;
-		
+		List<CompanyDTO> companies1 = page.getContent().stream().map(this::convertToCompanyDTO)
+				.collect(Collectors.toList());
+		;
+
 		model.addAttribute("currentPage", pageNum);
-	    model.addAttribute("totalPages", page.getTotalPages() - 1);
-	    model.addAttribute("totalItems", page.getTotalElements());
-	    
-	    //
-	    model.addAttribute("sortField", sortField);
-	    model.addAttribute("sortDir", sortDir);
-	    model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
-    
-	    model.addAttribute("companies", companies1);
-		
+		model.addAttribute("totalPages", page.getTotalPages() - 1);
+		model.addAttribute("totalItems", page.getTotalElements());
+
+		//
+		model.addAttribute("sortField", sortField);
+		model.addAttribute("sortDir", sortDir);
+		model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
+
+		model.addAttribute("companies", companies1);
+
 		return "company/index";
 	}
+
+	@RequestMapping("/add")
+	public String showNewProductPage(Model model) {
+		CompanyDTO companyDTO = new CompanyDTO();
+		model.addAttribute("companyDTO", companyDTO);
+
+		return "company/add";
+	}
 	
+	@RequestMapping(value = "/save", method = RequestMethod.POST)
+	public String saveProduct(@ModelAttribute("companyDTO") CompanyDTO companyDTO) {
+		Company company = convertToEntity(companyDTO);
+		companyService.save(company);
+		
+		return "redirect:/company";
+	}
+
 	private CompanyDTO convertToCompanyDTO(Company company) {
 		CompanyDTO companyDTO = new CompanyDTO();
 		companyDTO.setId(company.getId());
 		companyDTO.setName(company.getName());
 		companyDTO.setLocation(company.getLocation());
-		
+		companyDTO.setEmployeeNumber(company.getEmployeeNumber());
+
 		return companyDTO;
 	}
+	
+	private Company convertToEntity(CompanyDTO companyDTO) {
+		Company company =new Company();
+		company.setName(companyDTO.getName());
+		company.setLocation(companyDTO.getLocation());
+		company.setEmployeeNumber(companyDTO.getEmployeeNumber());
+		
+		return company;
+	}
 
-	
-	
 }
