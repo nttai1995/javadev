@@ -10,13 +10,10 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "employees")
 public class Employee {
-	
-	
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "employeeNumber")
-	private int employeeNumber;
+	private Integer employeeNumber;
 	
 	@Column(name = "lastName")
 	private String lastName;
@@ -33,8 +30,8 @@ public class Employee {
 	@Column(name = "officeCode")
 	private String officeCode;
 	
-	@Column(name = "reportsTo")
-	private int reportsTo;
+	@Column(name = "reportsTo", nullable=true)
+	private Integer reportsTo;
 	
 	@Column(name = "jobTitle")
 	private String jobTitle;

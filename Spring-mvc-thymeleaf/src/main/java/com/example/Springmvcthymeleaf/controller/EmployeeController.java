@@ -8,23 +8,23 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.example.Springmvcthymeleaf.entity.Employee;
-import com.example.Springmvcthymeleaf.repository.EmployeeRepository;
+import com.example.Springmvcthymeleaf.DTO.EmployeeDTO;
+import com.example.Springmvcthymeleaf.service.EmployeeService;
 
 @Controller
 @RequestMapping("/employee")
 public class EmployeeController {
 	
-	final EmployeeRepository employeeRepository;
+	final EmployeeService employeeService;
 	
-	public EmployeeController(EmployeeRepository employeeRepository) {
-		this.employeeRepository = employeeRepository;
+	public EmployeeController(EmployeeService employeeService) {
+		this.employeeService = employeeService;
 	}
 	
-	@GetMapping()
-	public String getEmployee(@RequestParam(name = "name", required = false, defaultValue = "World") String name, Model model) {
-		List<Employee> employees = employeeRepository.findAll();
+	@GetMapping("/list")
+	public String getEmployeeSortByParam(@RequestParam(name = "sortBy", required = false, defaultValue = "email") String field, Model model) {
+		List<EmployeeDTO> employees = employeeService.getAllEmployees(field);
 		model.addAttribute("employees", employees);
-		return "greeting";
+		return "employee";
 	}
 }
