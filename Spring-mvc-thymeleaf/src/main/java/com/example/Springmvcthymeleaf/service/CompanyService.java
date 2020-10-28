@@ -2,6 +2,8 @@ package com.example.Springmvcthymeleaf.service;
 
 import java.util.*;
 
+import org.springframework.data.domain.Page;
+
 import com.example.Springmvcthymeleaf.entity.Company;
 
 public interface CompanyService {
@@ -10,7 +12,7 @@ public interface CompanyService {
 	
 	public Company save(Company company);
 	
-	public List<Company> paging(int pageNumber, int pageSize);
+	public Page<Company> paging(int pageNumber);
 	
 	public List<Company> searchByName(String name);
 	

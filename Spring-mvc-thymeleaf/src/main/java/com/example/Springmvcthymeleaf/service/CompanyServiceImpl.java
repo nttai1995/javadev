@@ -34,18 +34,12 @@ public class CompanyServiceImpl implements CompanyService {
 	}
 	
 	@Override
-	public List<Company> paging(int pageNumber, int pageSize) {
+	public Page<Company> paging(int pageNumber) {
+		int pageSize = 2;
 		Pageable pageable = PageRequest.of(pageNumber, pageSize);
 		Page<Company> page = companyRepository.findAll(pageable);
 		
-		List<Company> listProducts = page.getContent();
-		
-		long totalItems = page.getTotalElements();
-		int totalPages = page.getTotalPages();
-		
-		System.out.println("totalItems: "+ totalItems);
-		System.out.println("totalPages: "+totalPages);
-		return listProducts;
+		return page;
 	}
 
 	@Override
