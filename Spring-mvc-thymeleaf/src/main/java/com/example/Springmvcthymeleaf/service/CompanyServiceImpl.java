@@ -10,6 +10,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.Springmvcthymeleaf.DTO.CompanyDTO;
 import com.example.Springmvcthymeleaf.entity.Company;
 import com.example.Springmvcthymeleaf.repository.CompanyRepository;
 
@@ -49,6 +50,7 @@ public class CompanyServiceImpl implements CompanyService {
 		
 		return companyRepository.searchByName(name);
 	}
+
 
 
 

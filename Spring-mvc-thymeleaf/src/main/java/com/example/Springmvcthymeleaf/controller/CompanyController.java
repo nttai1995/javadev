@@ -1,6 +1,7 @@
 package com.example.Springmvcthymeleaf.controller;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.Springmvcthymeleaf.DTO.CompanyDTO;
 import com.example.Springmvcthymeleaf.entity.Company;
 import com.example.Springmvcthymeleaf.service.CompanyService;
 
@@ -50,7 +52,9 @@ public class CompanyController {
 			sortDir = "asc";
 		}
 		Page<Company> page = companyService.pagingAndSorting(pageNum, sortField, sortDir);
-		List<Company> companies1 = page.getContent();
+		List<CompanyDTO> companies1 = page.getContent().stream()
+		        .map(this::convertToCompanyDTO)
+		        .collect(Collectors.toList());;
 		
 		model.addAttribute("currentPage", pageNum);
 	    model.addAttribute("totalPages", page.getTotalPages() - 1);
@@ -60,14 +64,20 @@ public class CompanyController {
 	    model.addAttribute("sortField", sortField);
 	    model.addAttribute("sortDir", sortDir);
 	    model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
-	    
+    
 	    model.addAttribute("companies", companies1);
-		
-
 		
 		return "company/index";
 	}
 	
+	private CompanyDTO convertToCompanyDTO(Company company) {
+		CompanyDTO companyDTO = new CompanyDTO();
+		companyDTO.setId(company.getId());
+		companyDTO.setName(company.getName());
+		companyDTO.setLocation(company.getLocation());
+		
+		return companyDTO;
+	}
 
 	
 	

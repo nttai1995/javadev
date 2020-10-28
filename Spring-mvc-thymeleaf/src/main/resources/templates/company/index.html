@@ -32,7 +32,7 @@
 		<a th:if="${currentPage > 0}" th:href="@{'/company/page/0'}">First</a> <span th:unless="${currentPage > 0}">First</span> 
 		<a th:if="${currentPage > 0}" th:href="@{'/company/page/' + ${currentPage - 1}}">Previous</a><span th:unless="${currentPage > 0}">Previous</span> | 
 		 <span th:each="i: ${#numbers.sequence(0, totalPages)}">
-		    <a th:if="${currentPage != i}" th:href="@{${i}}">[[${i}]]</a>
+		    <a th:if="${currentPage != i}" th:href="@{'/company/page/'+${i}}">[[${i}]]</a>
 		    <span th:unless="${currentPage != i}">[[${i}]]</span> &nbsp; 
 		</span>
 		<a th:if="${currentPage < totalPages}" th:href="@{'/company/page/' + ${currentPage + 1}}">Next</a> <span th:unless="${currentPage < totalPages}">Next</span>
