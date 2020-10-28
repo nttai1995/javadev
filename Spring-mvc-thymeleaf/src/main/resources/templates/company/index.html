@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	<h1>Company Page</h1>
+	<br/>
+	<a href="/category/add"> Add New  </a>
+	<br/>
+	<table border="1">
+	    <tr>
+	    	<th> ID </th>
+		    <th> Name </th>
+		    <th> Option </th>
+	    </tr>
+		<tr th:each="company, iterStat: ${companies}">
+			<td th:text="${company.id}"></td>
+			<td th:text="${company.name}"></td>
+			<td> <a href="#"> Update </a> | <a href="#"> Delete </a></td>
+		</tr>
+		
+	</table>
+</body>
+</html>
