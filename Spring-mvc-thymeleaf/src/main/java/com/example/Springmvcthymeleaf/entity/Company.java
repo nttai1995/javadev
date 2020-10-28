@@ -19,7 +19,7 @@ public class Company {
 	@Column(name = "name")
 	private String name;
 	
-	@Column(name = "location")
+	@Column(name = "localtion")
 	private String location;
 
 	public int getId() {
@@ -46,7 +46,10 @@ public class Company {
 		this.location = location;
 	}
 
-	
+	@Override
+	public String toString() {
+		return "Company [id=" + id + ", name=" + name + ", location=" + location + "]";
+	}
 	
 	
 }

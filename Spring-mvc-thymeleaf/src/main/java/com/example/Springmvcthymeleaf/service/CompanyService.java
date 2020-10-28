@@ -12,7 +12,7 @@ public interface CompanyService {
 	
 	public Company save(Company company);
 	
-	public Page<Company> paging(int pageNumber);
+	public Page<Company> pagingAndSorting(int pageNumber, String sortField, String sortDir);
 	
 	public List<Company> searchByName(String name);
 	

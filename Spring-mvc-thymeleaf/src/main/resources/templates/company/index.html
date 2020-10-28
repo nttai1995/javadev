@@ -11,17 +11,22 @@
 	<br/>
 	<table border="1">
 	    <tr>
-	    	<th> ID </th>
-		    <th> Name </th>
+	    	<th> <a th:href="@{'/company/page/' + ${currentPage} + '?sortField=id&sortDir=' + ${reverseSortDir}}">ID</a> </th>    	
+		    <th> <a th:href="@{'/company/page/' + ${currentPage} + '?sortField=name&sortDir=' + ${reverseSortDir}}">Name</a> </th>
+		    <th> <a th:href="@{'/company/page/' + ${currentPage} + '?sortField=location&sortDir=' + ${reverseSortDir}}">Location</a> </th>
 		    <th> Option </th>
+		    
 	    </tr>
 		<tr th:each="company, iterStat: ${companies}">
 			<td th:text="${company.id}"></td>
 			<td th:text="${company.name}"></td>
+			<td th:text="${company.location}"></td>
 			<td> <a href="#"> Update </a> | <a href="#"> Delete </a></td>
 		</tr>
 		
 	</table>
+	<br/>
+	<div><i>Sorted by [[${sortField}]] in [[${sortDir}]] order</i></div>
 	<br/>
 	<p>Total Items: [[${totalItems}]] | 
 		<a th:if="${currentPage > 0}" th:href="@{'/company/page/0'}">First</a> <span th:unless="${currentPage > 0}">First</span> 

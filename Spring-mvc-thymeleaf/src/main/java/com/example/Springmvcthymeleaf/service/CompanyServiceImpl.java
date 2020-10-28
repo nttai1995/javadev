@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,9 +35,10 @@ public class CompanyServiceImpl implements CompanyService {
 	}
 	
 	@Override
-	public Page<Company> paging(int pageNumber) {
+	public Page<Company> pagingAndSorting(int pageNumber, String sortField, String sortDir) {
 		int pageSize = 2;
-		Pageable pageable = PageRequest.of(pageNumber, pageSize);
+		Pageable pageable = PageRequest.of(pageNumber, pageSize, 
+				sortDir.equals("asc") ? Sort.by(sortField).ascending() : Sort.by(sortField).descending());
 		Page<Company> page = companyRepository.findAll(pageable);
 		
 		return page;
