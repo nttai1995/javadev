@@ -1,0 +1,117 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Serving Web Content</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link th:href="@{/css/styleEmployee.css}" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+	<div>
+		<h1>Employee Page</h1>
+		<input type="text" id="mySearch" placeholder="Search.." title="Type in a category">
+		<a class="Linkbutton" th:href="@{/employee}" >Reset</a>
+		<br>
+		<br>
+        <table id="employeeList" class="center" border="1">
+		    <thead>
+		        <tr>
+		            <th > Num </th>
+		            <th > Email </th>
+		            <th > First Name <a class="btn" 
+		            	th:href="@{''(sortBy=firstName)}">&#8645</a> </th>
+		            <th > Last Name <a class="btn" 
+		            	th:href="@{''(sortBy=lastName)}">&#8645</a></th>
+		            <th > Action </th>
+		        </tr>
+		    </thead>
+		    <tbody>
+		        <tr th:each="emp,iter : ${employees.content}">
+		           <td th:text="${emp.employeeNumber}">num</td>
+		            <td><a  th:href="@{/employee/detail(empId=${emp.employeeNumber})}" th:text="${emp.email}">Email</a></td>
+		            <td th:text="${emp.firstName}">First Name</td>
+		            <td th:text="${emp.lastName}">Last Name</td>
+		             <td ><a class="Linkbutton" th:href="@{/employee/edit(empId=${emp.employeeNumber})}" >Edit</a>
+		            	<form th:action="@{/employee/delete(empId=${emp.employeeNumber})}" th:method="delete" >
+			              <button type="submit" value="Submit" >Delete</button>
+			           </form>
+		            </td>
+		        </tr>
+		    </tbody>
+		</table>
+		<div style="display: inline;" th:if="${employees.totalPages > 0}" class="pagination"
+		    th:each="pageNumber : ${pageNumbers}">
+		    <a th:href="@{/employee(pageSize=${employees.size}, pageNo=${pageNumber})}"
+		        th:text="${pageNumber}"
+		        th:class="${pageNumber==employees.number + 1} ? active"></a>
+		</div>
+		<br>
+		<button id="myBtn">Add Employee</button>
+		<!-- The Modal -->
+		<div id="myModal" class="modal">
+		
+		  <!-- Modal content -->
+		  <div class="modal-content">
+		    <span class="close">&times;</span>
+		    <h2>Add Employee</h2>
+		    <form action="#" th:action="@{/employee}" th:object="${employee}" method="post">
+	    	<p>Email: <input type="text" th:field="*{email}" /></p>
+	        <p>First Name: <input type="text" th:field="*{firstName}" /></p>
+	        <p>Last Name: <input type="text" th:field="*{lastName}" /></p>
+	        <p>Extension: <input type="text" th:field="*{extension}" /></p>
+	        <p>Office Code: <input type="text" th:field="*{officeCode}" /></p>
+	        <p>Job Title: <input type="text" th:field="*{jobTitle}" /></p>
+	        <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
+	    	</form>
+		  </div>
+		
+		</div>
+		<div>
+			
+		</div>
+     </div>
+     
+    <script th:inline="javascript">
+    var modal = document.getElementById("myModal");
+
+	 // Get the button that opens the modal
+	 var btn = document.getElementById("myBtn");
+	
+	 // Get the <span> element that closes the modal
+	 var span = document.getElementsByClassName("close")[0];
+	
+	 // When the user clicks on the button, open the modal
+	 btn.onclick = function() {
+	   modal.style.display = "block";
+	 }
+	
+	 // When the user clicks on <span> (x), close the modal
+	 span.onclick = function() {
+	   modal.style.display = "none";
+	 }
+	
+	 // When the user clicks anywhere outside of the modal, close it
+	 window.onclick = function(event) {
+	   if (event.target == modal) {
+	     modal.style.display = "none";
+	   }
+	 }
+	 
+	// Get the input field
+	 var mySearch = document.getElementById("mySearch");
+
+	 // Execute a function when the user releases a key on the keyboard
+	 mySearch.addEventListener("keyup", function(event) {
+	   // Number 13 is the "Enter" key on the keyboard
+	   if (event.keyCode === 13) {
+	     // Cancel the default action, if needed
+	     event.preventDefault();
+	     // Trigger the button element with a click
+	     if(mySearch.value.length > 0)
+	     	window.location.href = '/employee/search?firstName=' + mySearch.value;
+	     else
+	    	 alert("please enter a First Name!");
+	   }
+	 });
+    </script> 
+</body>
+</html> 

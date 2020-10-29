@@ -1,0 +1,45 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Serving Web Content</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style type="text/css">
+    	form { 
+    		text-align: center;
+    		width: 25%;
+    		border-style: solid;
+    		border-width: 1px;
+    		}
+    	.Linkbutton {
+		  font: bold 11px Arial;
+		  text-decoration: none;
+		  background-color: #EEEEEE;
+		  color: #333333;
+		  padding: 2px 6px 2px 6px;
+		  border-top: 1px solid #CCCCCC;
+		  border-right: 1px solid #333333;
+		  border-bottom: 1px solid #333333;
+		  border-left: 1px solid #CCCCCC;
+		}
+    </style>
+</head>
+<body>
+	<div>
+		<div>
+			<h1>Update Employee</h1>
+			<form action="#" th:action="@{/employee}" th:object="${employee}" method="post">
+	    	<p>Email: <input type="text" th:field="*{email}" /></p>
+	        <p>First Name: <input type="text" th:field="*{firstName}" /></p>
+	        <p>Last Name: <input type="text" th:field="*{lastName}" /></p>
+	        <p>Extension: <input type="text" th:field="*{extension}" /></p>
+	        <p>Office Code: <input type="text" th:field="*{officeCode}" /></p>
+	        <p>Job Title: <input type="text" th:field="*{jobTitle}" /></p>
+	        <input type="hidden" th:field="*{employeeNumber}" />
+	        <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
+	    	</form>
+	    	<br>
+	    	<a class="Linkbutton" th:href="@{/employee}" >Back</a>
+		</div>
+     </div>
+</body>
+</html> 
