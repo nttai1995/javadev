@@ -1,10 +1,14 @@
 package com.example.Springmvcthymeleaf.entity;
 
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -22,8 +26,8 @@ public class Company {
 	@Column(name = "localtion")
 	private String location;
 	
-	@Column(name = "employee_number")
-	private String employeeNumber;
+	@OneToMany(mappedBy="company")
+	private Set<Employee> employees;
 
 	public Integer getId() {
 		return id;
@@ -49,17 +53,9 @@ public class Company {
 		this.location = location;
 	}
 
-	public String getEmployeeNumber() {
-		return employeeNumber;
-	}
-
-	public void setEmployeeNumber(String employeeNumber) {
-		this.employeeNumber = employeeNumber;
-	}
-
 	@Override
 	public String toString() {
-		return "Company [id=" + id + ", name=" + name + ", location=" + location + ", employeeNumber=" + employeeNumber
+		return "Company [id=" + id + ", name=" + name + ", location=" + location 
 				+ "]";
 	}
 

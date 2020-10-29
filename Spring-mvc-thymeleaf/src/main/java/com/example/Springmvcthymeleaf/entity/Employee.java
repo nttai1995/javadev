@@ -5,42 +5,70 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "employees")
 public class Employee {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "employeeNumber")
 	private Integer employeeNumber;
 	
+	@NotBlank
 	@Column(name = "lastName")
 	private String lastName;
 	
+	@NotBlank
 	@Column(name = "firstName")
 	private String firstName;
 	
+	@NotBlank
 	@Column(name = "extension")
 	private String extension;
 	
-	@Column(name = "email")
+	@NotBlank
+	@Email(regexp= "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")
+	@Column(name = "email", unique = true)
 	private String email;
 	
+	@NotBlank
 	@Column(name = "officeCode")
 	private String officeCode;
 	
 	@Column(name = "reportsTo", nullable=true)
 	private Integer reportsTo;
 	
+	@NotBlank
 	@Column(name = "jobTitle")
 	private String jobTitle;
+	
+	@ManyToOne
+	@JoinColumn(name = "companyId", nullable = false)
+	private Company company;
 
-	public int getEmployeeNumber() {
+	public Company getCompany() {
+		return company;
+	}
+
+	public void setCompany(Company company) {
+		this.company = company;
+	}
+
+	public void setReportsTo(Integer reportsTo) {
+		this.reportsTo = reportsTo;
+	}
+
+	public Integer getEmployeeNumber() {
 		return employeeNumber;
 	}
 
-	public void setEmployeeNumber(int employeeNumber) {
+	public void setEmployeeNumber(Integer employeeNumber) {
 		this.employeeNumber = employeeNumber;
 	}
 

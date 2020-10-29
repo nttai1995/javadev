@@ -136,7 +136,7 @@ public class CompanyController {
 		companyDTO.setId(company.getId());
 		companyDTO.setName(company.getName());
 		companyDTO.setLocation(company.getLocation());
-		companyDTO.setEmployeeNumber(company.getEmployeeNumber());
+		
 
 		return companyDTO;
 	}
@@ -148,7 +148,7 @@ public class CompanyController {
 		}
 		company.setName(companyDTO.getName());
 		company.setLocation(companyDTO.getLocation());
-		company.setEmployeeNumber(companyDTO.getEmployeeNumber());
+		
 
 		return company;
 	}

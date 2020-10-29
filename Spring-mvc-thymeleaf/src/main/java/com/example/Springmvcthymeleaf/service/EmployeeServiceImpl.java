@@ -1,13 +1,12 @@
 package com.example.Springmvcthymeleaf.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
-import javax.transaction.Transactional;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -18,16 +17,31 @@ import com.example.Springmvcthymeleaf.repository.EmployeeRepository;
 @Service
 public class EmployeeServiceImpl implements EmployeeService{
 	
-	@Autowired
-	private EmployeeRepository employeeRepository;
+	final EmployeeRepository employeeRepository;
+	
+	public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
+		this.employeeRepository = employeeRepository;
+	}
 	
 	@Override
-	public List<EmployeeDTO> getAllEmployees(String sortBy) {
-		return ((List<Employee>) employeeRepository
-				.findAll(Sort.by(sortBy)))
+	public Page<EmployeeDTO> getAllEmployees(String sortBy, Integer pageNo, Integer pageSize) {
+		Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+		Page<EmployeeDTO> pageResult = ( employeeRepository
+				.findAll(paging))
+				.map(this::convertToEmployeeDTO);
+		
+		return pageResult;
+	}
+	
+	@Override
+	public List<EmployeeDTO> findByFirstName(String firstName) {
+		List<EmployeeDTO> pageResult = ( employeeRepository
+				.findByFirstName(firstName))
 				.stream()
 				.map(this::convertToEmployeeDTO)
 				.collect(Collectors.toList());
+		
+		return pageResult;
 	}
 	
 	private EmployeeDTO convertToEmployeeDTO(Employee employee) {
@@ -37,6 +51,30 @@ public class EmployeeServiceImpl implements EmployeeService{
 		employeeDTO.setFirstName(employee.getFirstName());
 		employeeDTO.setLastName(employee.getLastName());
 		return employeeDTO;
+	}
+	
+	@Override
+	public Employee findOne(Integer empId) {
+		
+		return employeeRepository.findById(empId).get();
+	}
+
+	@Override
+	public void saveEmployee(Employee emp) {
+		try {
+			employeeRepository.save(emp);
+		} catch (Exception e) {
+			throw e;
+		}
+	}
+
+	@Override
+	public void deleteEmployee(Integer empId) {
+		try {
+			employeeRepository.deleteById(empId);
+		} catch (Exception e) {
+			throw e;
+		}
 	}
 
 }
