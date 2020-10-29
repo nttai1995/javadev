@@ -22,7 +22,7 @@
 			<td th:text="${company.name}"></td>
 			<td th:text="${company.location}"></td>
 			<td><a th:href="@{'/company/edit/' + ${company.id}}"> Update </a> | 
-			 	<a th:href="@{'/company/delete/' + ${company.id}}"> Delete </a>
+			 	<a th:href="@{'/company/delete/' + ${company.id}}" onclick="return confirm ('Are you sure want to delete ?')"> Delete </a> |
 				<a th:href="@{'/company/detail/' + ${company.id}}"> Detail </a>
 			</td>
 		</tr>

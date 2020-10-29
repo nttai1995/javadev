@@ -1,10 +1,18 @@
 package com.example.Springmvcthymeleaf.DTO;
 
+import javax.validation.constraints.*;
+
 public class CompanyDTO {
 
 	private Integer id;
+	
+	@NotBlank
 	private String name;
+	
+	@NotBlank
 	private String location;
+	
+	@Min(value = 10)
 	private String employeeNumber;
 	
 	public Integer getId() {

@@ -23,14 +23,17 @@
                 <tr>
                     <td>Company Name:</td>
                     <td><input type="text" th:field="*{name}" /></td>
+                    <td><span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span></td>
                 </tr>
                 <tr>
                     <td>Location:</td>
                     <td><input type="text" th:field="*{location}" /></td>
+                    <td><span th:if="${#fields.hasErrors('location')}" th:errors="*{location}"></span></td>
                 </tr> 
                 <tr>
                     <td>Employee Number:</td>
                     <td><input type="text" th:field="*{employeeNumber}" /></td>
+                    <td><span th:if="${#fields.hasErrors('employeeNumber')}" th:errors="*{employeeNumber}"></span></td>
                 </tr>                           
                 <tr>
                     <td colspan="2"><button type="submit">Save</button> </td>
