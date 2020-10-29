@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -45,6 +47,22 @@ public class Employee {
 	@NotBlank
 	@Column(name = "jobTitle")
 	private String jobTitle;
+	
+	@ManyToOne
+	@JoinColumn(name = "companyId", nullable = false)
+	private Company company;
+
+	public Company getCompany() {
+		return company;
+	}
+
+	public void setCompany(Company company) {
+		this.company = company;
+	}
+
+	public void setReportsTo(Integer reportsTo) {
+		this.reportsTo = reportsTo;
+	}
 
 	public Integer getEmployeeNumber() {
 		return employeeNumber;
