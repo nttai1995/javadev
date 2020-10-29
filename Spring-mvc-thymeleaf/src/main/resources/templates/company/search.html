@@ -2,19 +2,19 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title> Search Page </title>
 </head>
 <body>
 	<h1>Company Page</h1>
 	<br/>
-	<form th:action="@{'/company/search'}">
+<!-- 	<form th:action="@{'/company/search'}">
 	    Filter: <input type="text" name="keyword" id="keyword" size="50" th:value="${keyword}" required /> &nbsp;
 	    <input type="submit" value="Search" /> &nbsp;
 	    <input type="button" value="Clear" id="btnClear" onclick="clearSearch()" />
-	</form>
+	</form> -->
 	
 	<br/><br/>
-	<a href="/company/add"> Add New  </a>
+
 	<br/> <br/>
 	<table border="1">
 	    <tr>
@@ -35,26 +35,14 @@
 		</tr>
 		
 	</table>
+	<br/>	
 	<br/>
-	<div><i>Sorted by [[${sortField}]] in [[${sortDir}]] order</i></div>
-	<br/>
-	<p>Total Items: [[${totalItems}]] | 
-		<a th:if="${currentPage > 0}" th:href="@{'/company/page/0'}">First</a> <span th:unless="${currentPage > 0}">First</span> 
-		<a th:if="${currentPage > 0}" th:href="@{'/company/page/' + ${currentPage - 1}}">Previous</a><span th:unless="${currentPage > 0}">Previous</span> | 
-		 <span th:each="i: ${#numbers.sequence(0, totalPages)}">
-		    <a th:if="${currentPage != i}" th:href="@{'/company/page/'+${i}}">[[${i}]]</a>
-		    <span th:unless="${currentPage != i}">[[${i}]]</span> &nbsp; 
-		</span>
-		<a th:if="${currentPage < totalPages}" th:href="@{'/company/page/' + ${currentPage + 1}}">Next</a> <span th:unless="${currentPage < totalPages}">Next</span>
-		<a th:if="${currentPage < totalPages}" th:href="@{'/company/page/' + ${totalPages}}">Last</a><span th:unless="${currentPage < totalPages}">Last</span>
-	</p>
-	
+
 	<script type="text/javascript">
 	    function clearSearch() {
 	        window.location = "[[@{/company}]]";
 	    }
 	</script>
-
 
 </body>
 </html>

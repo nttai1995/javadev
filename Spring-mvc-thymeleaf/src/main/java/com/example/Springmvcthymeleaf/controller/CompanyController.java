@@ -39,11 +39,6 @@ public class CompanyController {
 	@RequestMapping("/page/{pageNum}")
 	public String viewCompanyPage(Model model, @PathVariable(name = "pageNum") int pageNum,
 			@Param("sortField") String sortField, @Param("sortDir") String sortDir) {
-		// Chuc nang list
-		/*
-		 * List<Company> companies = companyService.findAll();
-		 * model.addAttribute("companies", companies);
-		 */
 
 		// Chuc nang paging and sorting
 		if (sortField == null) {
@@ -119,6 +114,21 @@ public class CompanyController {
 		model.addAttribute("company", companyDTO);
 
 		return "company/detail";
+	}
+
+	// Feature search
+	@RequestMapping("/search")
+	public String search(Model model, @Param("keyword") String keyword) {
+		// 
+		List<Company> companies = companyService.searchByName(keyword);
+		List<CompanyDTO> companyDTOs = companies.stream().map(this::convertToCompanyDTO)
+				.collect(Collectors.toList());
+		
+		model.addAttribute("companies", companyDTOs);
+		model.addAttribute("keyword", keyword);
+		model.addAttribute("totalItems", companies.size());
+		
+		return "company/search";
 	}
 
 	private CompanyDTO convertToCompanyDTO(Company company) {
