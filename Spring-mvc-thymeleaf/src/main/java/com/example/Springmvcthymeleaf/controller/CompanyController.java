@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.example.Springmvcthymeleaf.DTO.CompanyDTO;
+import com.example.Springmvcthymeleaf.DTO.EmployeeDTO;
 import com.example.Springmvcthymeleaf.entity.Company;
+import com.example.Springmvcthymeleaf.entity.Employee;
 import com.example.Springmvcthymeleaf.service.CompanyService;
 
 @Controller
@@ -130,6 +132,18 @@ public class CompanyController {
 		
 		return "company/search";
 	}
+	
+	@RequestMapping("/get-employee/{id}")
+	public String showEmployeeOfAnCompany(Model model, @PathVariable(name = "id") int id) {
+		Company company = companyService.find(id);
+		Set<Employee> employees = company.getEmployees();
+		List<EmployeeDTO> employeeDTO = employees.stream().map(this::convertToEmployeeDTO)
+				.collect(Collectors.toList());;
+		
+		model.addAttribute("employees", employeeDTO);
+		
+		return "company/list_employee";
+	}
 
 	private CompanyDTO convertToCompanyDTO(Company company) {
 		CompanyDTO companyDTO = new CompanyDTO();
@@ -151,6 +165,15 @@ public class CompanyController {
 		
 
 		return company;
+	}
+	
+	private EmployeeDTO convertToEmployeeDTO(Employee employee) {
+		EmployeeDTO employeeDTO = new EmployeeDTO();
+		employeeDTO.setEmployeeNumber(employee.getEmployeeNumber());
+		employeeDTO.setEmail(employee.getEmail());
+		employeeDTO.setFirstName(employee.getFirstName());
+		employeeDTO.setLastName(employee.getLastName());
+		return employeeDTO;
 	}
 
 }

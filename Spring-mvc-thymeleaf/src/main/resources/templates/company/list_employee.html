@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	<h1>List Employee of a Company Page</h1>
+	<hr/>
+	<br/>
+	<table border="1">
+	    <tr>
+	    	<th>Employee Number </th>    	
+		    <th>First Name </th>
+		    <th>Last Name </th>
+		    <th>Email </th>
+		    <th> Option </th>
+		    
+	    </tr>
+		<tr th:each="employee, iterStat: ${employees}">
+			<td th:text="${employee.employeeNumber}"></td>
+			<td th:text="${employee.firstName}"></td>
+			<td th:text="${employee.lastName}"></td>
+			<td th:text="${employee.email}"></td>
+			<td></td>
+		</tr>
+		
+	</table>
+	
+</body>
+</html>
