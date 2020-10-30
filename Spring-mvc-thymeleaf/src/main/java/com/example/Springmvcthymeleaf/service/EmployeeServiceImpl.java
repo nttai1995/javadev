@@ -50,6 +50,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 		employeeDTO.setEmail(employee.getEmail());
 		employeeDTO.setFirstName(employee.getFirstName());
 		employeeDTO.setLastName(employee.getLastName());
+		employeeDTO.setCompany(employee.getCompany());
 		return employeeDTO;
 	}
 	

@@ -21,6 +21,7 @@
 		            	th:href="@{''(sortBy=firstName)}">&#8645</a> </th>
 		            <th > Last Name <a class="btn" 
 		            	th:href="@{''(sortBy=lastName)}">&#8645</a></th>
+	            	<th > Company </th>
 		            <th > Action </th>
 		        </tr>
 		    </thead>
@@ -30,6 +31,7 @@
 		            <td><a  th:href="@{/employee/detail(empId=${emp.employeeNumber})}" th:text="${emp.email}">Email</a></td>
 		            <td th:text="${emp.firstName}">First Name</td>
 		            <td th:text="${emp.lastName}">Last Name</td>
+		            <td th:text="${emp.company.name}">Company</td>
 		             <td ><a class="Linkbutton" th:href="@{/employee/edit(empId=${emp.employeeNumber})}" >Edit</a>
 		            	<form th:action="@{/employee/delete(empId=${emp.employeeNumber})}" th:method="delete" >
 			              <button type="submit" value="Submit" >Delete</button>

@@ -9,6 +9,9 @@ import javax.validation.Valid;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -57,8 +60,18 @@ public class EmployeeController {
 			@RequestParam(name = "firstName", required = true) String firstName,
 			Model model) 
 	{
-		Page<EmployeeDTO> employees = new PageImpl<>(employeeService.findByFirstName(firstName)) ;
+		Pageable paging = PageRequest.of(0, 10);
+		List<EmployeeDTO> emps =  employeeService.findByFirstName(firstName);
+		Page<EmployeeDTO> employees = new PageImpl<>(emps, paging, emps.size());
+
 		model.addAttribute("employees", employees);
+		int totalPages = employees.getTotalPages();
+		if(totalPages > 0) {
+			List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
+					.boxed()
+					.collect(Collectors.toList());
+			model.addAttribute("pageNumbers",pageNumbers);
+		}
 		model.addAttribute("employee", new Employee());
 		return "employee/index";
 	}
