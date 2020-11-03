@@ -30,6 +30,11 @@
 	        	<span th:if="${#fields.hasErrors('officeCode')}" th:errors="*{officeCode}" class="error"></span></p>
 	        <p>Job Title: <input type="text" th:field="*{jobTitle}" />
 	        	<span th:if="${#fields.hasErrors('jobTitle')}" th:errors="*{jobTitle}" class="error"></span></p>
+	        <p>Company: <select th:field="*{company.id}">
+			    <option th:each="i : ${companies}" th:value="${i.id}" th:text="${i.name}">
+			    </option>
+			</select></p>
+    		
 	        <input type="hidden" th:field="*{employeeNumber}" />
 	        <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
 	    	</form>
@@ -37,5 +42,7 @@
 	    	<a class="Linkbutton" th:href="@{/employee}" >Back</a>
 		</div>
      </div>
+     
+     
 </body>
 </html> 

@@ -11,7 +11,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,7 +21,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.Springmvcthymeleaf.DTO.EmployeeDTO;
+import com.example.Springmvcthymeleaf.entity.Company;
 import com.example.Springmvcthymeleaf.entity.Employee;
+import com.example.Springmvcthymeleaf.service.CompanyService;
 import com.example.Springmvcthymeleaf.service.EmployeeService;
 
 @Controller
@@ -30,9 +31,11 @@ import com.example.Springmvcthymeleaf.service.EmployeeService;
 public class EmployeeController {
 	
 	final EmployeeService employeeService;
+	final CompanyService companyService;
 	
-	public EmployeeController(EmployeeService employeeService) {
+	public EmployeeController(EmployeeService employeeService, CompanyService companyService) {
 		this.employeeService = employeeService;
+		this.companyService = companyService;
 	}
 	
 	@GetMapping("")
@@ -44,6 +47,10 @@ public class EmployeeController {
 	{
 		Page<EmployeeDTO> employees = employeeService.getAllEmployees(sortBy, pageNo - 1, pageSize);
 		model.addAttribute("employees", employees);
+		List<Company> companies = companyService.findAll().stream().distinct().collect(Collectors.toList());
+		model.addAttribute("companies", companies);
+		List<String> fisrtNameList = employees.stream().map(emp -> emp.getFirstName()).distinct().collect(Collectors.toList());
+		model.addAttribute("fisrtNameList", fisrtNameList);
 		int totalPages = employees.getTotalPages();
 		if(totalPages > 0) {
 			List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
@@ -87,8 +94,10 @@ public class EmployeeController {
 	}
 	
 	@PostMapping("")
-	public String addEmployee(@Valid @ModelAttribute("employee") Employee employee, BindingResult bindingResult) {
+	public String addEmployee(@Valid @ModelAttribute("employee") Employee employee, BindingResult bindingResult, Model model) {
+		List<Company> companies = companyService.findAll().stream().distinct().collect(Collectors.toList());
 		if (bindingResult.hasErrors()) {
+			model.addAttribute("companies", companies);
 			return "employee/add";
 		}
 		else {
@@ -97,6 +106,7 @@ public class EmployeeController {
 			} catch (DataIntegrityViolationException e) {
 				if(e.getMessage().contains("employees.email")) {
 					bindingResult.rejectValue("email", "error.user", "An account already exists for this email.");
+					model.addAttribute("companies", companies);
 					return "employee/add";
 				}else {
 					throw e;
@@ -113,6 +123,8 @@ public class EmployeeController {
 	{
 		Employee employee = employeeService.findOne(empId);
 		model.addAttribute("employee", employee);
+		List<Company> companies = companyService.findAll().stream().distinct().collect(Collectors.toList());
+		model.addAttribute("companies", companies);
 		return "employee/edit";
 	}
 	

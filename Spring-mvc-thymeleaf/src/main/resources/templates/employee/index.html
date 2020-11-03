@@ -4,6 +4,9 @@
     <title>Getting Started: Serving Web Content</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link th:href="@{/css/styleEmployee.css}" rel="stylesheet" type="text/css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 </head>
 <body>
 	<div>
@@ -62,6 +65,11 @@
 	        <p>Extension: <input type="text" th:field="*{extension}" /></p>
 	        <p>Office Code: <input type="text" th:field="*{officeCode}" /></p>
 	        <p>Job Title: <input type="text" th:field="*{jobTitle}" /></p>
+	        <p>Company: <select th:field="*{company.id}">
+			    <option th:each="i : ${companies}" th:value="${i.id}" th:text="${i.name}">
+			    </option>
+			</select></p>
+			
 	        <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
 	    	</form>
 		  </div>
@@ -101,6 +109,34 @@
 	// Get the input field
 	 var mySearch = document.getElementById("mySearch");
 
+	 function split( val ) {
+	      return val.split( /,\s*/ );
+	    }
+	 function extractLast( term ) {
+	      return split( term ).pop();
+	    }
+	 var fisrtNameList = /*[[${fisrtNameList}]]*/'noValue';
+	    $(document).ready(function() {
+	        $("#mySearch").autocomplete({
+	            minLength : 1,
+	            source : function( request, response ) {
+	                // delegate back to autocomplete, but extract the last term
+	                response( $.ui.autocomplete.filter(
+	                		fisrtNameList, extractLast( request.term ) ) );
+	              },
+	            select: function( event, ui ) {
+	                var terms = split( this.value );
+	                // remove the current input
+	                terms.pop();
+	                // add the selected item
+	                terms.push( ui.item.value );
+	                // add placeholder to get the comma-and-space at the end
+	                terms.push( "" );
+	                this.value = terms.join( ", " );
+	                return false;
+	              }
+	        })
+	 });
 	 // Execute a function when the user releases a key on the keyboard
 	 mySearch.addEventListener("keyup", function(event) {
 	   // Number 13 is the "Enter" key on the keyboard
